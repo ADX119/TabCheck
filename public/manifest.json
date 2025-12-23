@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Tab Hoarding Shame Meter",
+  "version": "1.0.0",
+  "description": "Automatically detects your open tabs and shames you for it. Because you need to hear it.",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Tab Hoarding Shame Meter"
+  },
+  "permissions": ["tabs"],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
