@@ -1,4 +1,6 @@
 // Tab threshold warnings
+console.log("🔥 Tab Shame Background Script Loaded!");
+
 const THRESHOLDS = [10, 15, 20, 25, 35, 50, 75, 100];
 let lastNotifiedThreshold = 0;
 
@@ -15,6 +17,8 @@ const THRESHOLD_MESSAGES = {
 };
 
 function checkThresholds(tabCount) {
+  console.log("📊 Checking thresholds for tab count:", tabCount);
+  
   // Find the highest threshold crossed
   let crossedThreshold = 0;
   for (const threshold of THRESHOLDS) {
@@ -23,8 +27,11 @@ function checkThresholds(tabCount) {
     }
   }
 
+  console.log("🎯 Crossed threshold:", crossedThreshold, "Last notified:", lastNotifiedThreshold);
+
   // Only notify if we crossed a NEW threshold
   if (crossedThreshold > lastNotifiedThreshold) {
+    console.log("🚨 New threshold crossed! Showing notification...");
     lastNotifiedThreshold = crossedThreshold;
     showNotification(crossedThreshold, tabCount);
   }
@@ -39,23 +46,33 @@ function showNotification(threshold, tabCount) {
   const messageData = THRESHOLD_MESSAGES[threshold];
   if (!messageData) return;
 
+  console.log("📢 Creating notification for threshold:", threshold);
+
   chrome.notifications.create({
     type: "basic",
     iconUrl: "icons/icon128.png",
     title: `🔥 ${messageData.title}`,
     message: `${messageData.message}\n\nCurrent tabs: ${tabCount}`,
     priority: 2
+  }, (notificationId) => {
+    if (chrome.runtime.lastError) {
+      console.error("❌ Notification error:", chrome.runtime.lastError);
+    } else {
+      console.log("✅ Notification created:", notificationId);
+    }
   });
 }
 
 // Listen for tab changes
 chrome.tabs.onCreated.addListener(() => {
+  console.log("➕ Tab created!");
   chrome.tabs.query({}, (tabs) => {
     checkThresholds(tabs.length);
   });
 });
 
 chrome.tabs.onRemoved.addListener(() => {
+  console.log("➖ Tab removed!");
   setTimeout(() => {
     chrome.tabs.query({}, (tabs) => {
       checkThresholds(tabs.length);
@@ -65,10 +82,12 @@ chrome.tabs.onRemoved.addListener(() => {
 
 // Initial check on extension load
 chrome.tabs.query({}, (tabs) => {
+  console.log("🚀 Initial tab count:", tabs.length);
   // Set initial threshold without notifying
   for (const threshold of THRESHOLDS) {
     if (tabs.length >= threshold) {
       lastNotifiedThreshold = threshold;
     }
   }
+  console.log("📍 Initial threshold set to:", lastNotifiedThreshold);
 });
