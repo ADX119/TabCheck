@@ -7,8 +7,9 @@ declare global {
       tabs?: {
         query: (
           queryInfo: { windowId?: number },
-          callback: (tabs: { id?: number }[]) => void
+          callback: (tabs: { id?: number; url?: string; lastAccessed?: number }[]) => void
         ) => void;
+        remove: (tabIds: number | number[], callback?: () => void) => void;
         onCreated?: {
           addListener: (callback: () => void) => void;
           removeListener: (callback: () => void) => void;
@@ -65,5 +66,28 @@ export function useTabCount() {
     }
   }, [updateTabCount]);
 
-  return { tabCount, isLoading, refresh: updateTabCount };
+  const closeOldTabs = useCallback((keepRecent: number = 10) => {
+    if (typeof window !== "undefined" && window.chrome?.tabs?.query && window.chrome?.tabs?.remove) {
+      window.chrome.tabs.query({}, (tabs) => {
+        // Sort by lastAccessed (most recent first)
+        const sortedTabs = [...tabs].sort((a, b) => 
+          (b.lastAccessed || 0) - (a.lastAccessed || 0)
+        );
+        
+        // Keep the most recent tabs, close the rest
+        const tabsToClose = sortedTabs.slice(keepRecent);
+        const tabIds = tabsToClose
+          .map(tab => tab.id)
+          .filter((id): id is number => id !== undefined);
+        
+        if (tabIds.length > 0) {
+          window.chrome?.tabs?.remove(tabIds, () => {
+            updateTabCount();
+          });
+        }
+      });
+    }
+  }, [updateTabCount]);
+
+  return { tabCount, isLoading, refresh: updateTabCount, closeOldTabs };
 }
