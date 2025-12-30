@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Trash2 } from "lucide-react";
 import { useTabCount } from "@/hooks/useTabCount";
 import { getShameLevel, getRandomMessage } from "@/lib/constants";
 import { TabCounter } from "./TabCounter";
 import { ShameMeter } from "./ShameMeter";
 import { ShameMessage } from "./ShameMessage";
 import { PerformanceImpact } from "./PerformanceImpact";
+import { Button } from "./ui/button";
 
 export function ShameCard() {
-  const { tabCount, isLoading, refresh } = useTabCount();
+  const { tabCount, isLoading, refresh, closeOldTabs } = useTabCount();
   const [message, setMessage] = useState("");
 
   const shameLevel = getShameLevel(tabCount);
@@ -20,6 +21,10 @@ export function ShameCard() {
       setMessage(getRandomMessage(shameLevel));
     }
   }, [tabCount, shameLevel, isLoading]);
+
+  const handleCloseUnused = () => {
+    closeOldTabs(10); // Keep 10 most recent tabs
+  };
 
   if (isLoading) {
     return (
@@ -68,6 +73,19 @@ export function ShameCard() {
 
       {/* Performance Impact */}
       <PerformanceImpact shameLevel={shameLevel} />
+
+      {/* Close Unused Tabs Button */}
+      {tabCount > 10 && (
+        <Button
+          onClick={handleCloseUnused}
+          variant="destructive"
+          size="sm"
+          className="w-full gap-2"
+        >
+          <Trash2 size={14} />
+          Close Unused Tabs (Keep 10)
+        </Button>
+      )}
     </motion.div>
   );
 }
