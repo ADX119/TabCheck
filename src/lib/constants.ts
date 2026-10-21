@@ -1,9 +1,10 @@
-// Shame level thresholds and their configurations
+// Brainrot levels: the more tabs, the more cooked your brain is.
 export const SHAME_LEVELS = {
   HEALTHY: {
     min: 0,
     max: 10,
-    label: "Disciplined",
+    label: "Sigma Mode",
+    emoji: "🗿",
     color: "shame-healthy",
     glowClass: "text-glow-healthy",
     bgGlowClass: "bg-glow-healthy",
@@ -11,7 +12,8 @@ export const SHAME_LEVELS = {
   RISKY: {
     min: 11,
     max: 25,
-    label: "Getting Risky",
+    label: "Mid Behavior",
+    emoji: "😐",
     color: "shame-risky",
     glowClass: "text-glow-risky",
     bgGlowClass: "bg-glow-risky",
@@ -19,7 +21,8 @@ export const SHAME_LEVELS = {
   DECLINING: {
     min: 26,
     max: 50,
-    label: "Productivity Dying",
+    label: "Lowkey Cooked",
+    emoji: "🍳",
     color: "shame-declining",
     glowClass: "text-glow-declining",
     bgGlowClass: "bg-glow-declining",
@@ -27,7 +30,8 @@ export const SHAME_LEVELS = {
   CRYING: {
     min: 51,
     max: 100,
-    label: "System Crying",
+    label: "Skibidi Brainrot",
+    emoji: "🚽",
     color: "shame-crying",
     glowClass: "text-glow-crying",
     bgGlowClass: "bg-glow-crying",
@@ -35,112 +39,112 @@ export const SHAME_LEVELS = {
   HELP: {
     min: 101,
     max: Infinity,
-    label: "You Need Help",
+    label: "Tung Tung Tung Sahur",
+    emoji: "🪵",
     color: "shame-help",
     glowClass: "text-glow-help",
     bgGlowClass: "bg-glow-help",
   },
 } as const;
 
-// Sarcastic messages for each shame level
-export const SHAME_MESSAGES: Record<keyof typeof SHAME_LEVELS, string[]> = {
+export type ShameLevel = keyof typeof SHAME_LEVELS;
+
+// Roasts for each brainrot level
+export const SHAME_MESSAGES: Record<ShameLevel, string[]> = {
   HEALTHY: [
-    "This is acceptable behavior.",
-    "Look at you, being a functional adult.",
-    "Your RAM is actually breathing.",
-    "Minimalism looks good on you.",
-    "Marie Kondo would be proud.",
-    "Who hurt you into being this organized?",
-    "Suspicious. Nobody is this disciplined.",
-    "Your therapist would be impressed.",
-    "Did you just... close tabs? Voluntarily?",
+    "Sigma grindset. Your RAM is mewing.",
+    "+1000 aura. Locked in fr fr.",
+    "Main character energy. The browser respects you.",
+    "Certified clean. Not a single brain cell rotted.",
+    "Lowkey suspicious. Nobody is this locked in.",
+    "Your tabs are giving 'has a 5am routine'.",
+    "Marie Kondo just followed you.",
+    "Did you just... close tabs? Voluntarily? W.",
   ],
   RISKY: [
-    "One more tab and we need to talk.",
-    "You're on thin ice, friend.",
-    "I see where this is going...",
-    "The hoarding has begun.",
-    "Close something. Anything. Please.",
-    "Your future self is already disappointed.",
-    "This is the gateway drug to tab addiction.",
-    "Starting to smell like digital hoarding in here.",
-    "Alexa, play 'The Sound of Silence'.",
-    "Your browser just sighed. I heard it.",
+    "It's giving 'I'll read it later'. You won't.",
+    "Mid. Painfully mid.",
+    "Your aura is leaking, bestie.",
+    "The brainrot is loading... ▓▓░░░",
+    "One more tab and you're officially an NPC.",
+    "Delulu if you think you'll get back to these.",
+    "This is how Ohio starts.",
+    "Your browser just let out a tiny sigh. I heard it.",
+    "Not cooked yet, but the oven is preheating.",
   ],
   DECLINING: [
-    "Your browser is sweating.",
-    "Each tab is a cry for help.",
-    "Productivity has left the chat.",
-    "Do you even remember what's in those tabs?",
-    "This is not a bookmark manager.",
-    "Half of those tabs are duplicates. Admit it.",
-    "Your computer fans are screaming, not spinning.",
-    "Chrome is eating your RAM for breakfast, lunch, and dinner.",
-    "At this rate, your laptop needs therapy.",
-    "You're not 'keeping options open', you're hoarding.",
-    "Somewhere, a minimalist is crying.",
+    "You're cooked. Well done. Extra crispy.",
+    "Chrome is charging you the Fanum tax on RAM.",
+    "Each tab is a little Labubu of regret.",
+    "Bro thinks the tab bar is a bookmark manager.",
+    "No cap, half of these are duplicates.",
+    "Your attention span left on read.",
+    "Productivity said 'it's not you, it's your tabs'.",
+    "Rizz: 0. Tabs: too many.",
+    "This is lowkey an Ohio-level browser.",
+    "Your laptop fan is doing a TikTok dance rn.",
   ],
   CRYING: [
-    "RAM has left the chat.",
-    "Your CPU is writing its will.",
-    "Close tabs. Please. I'm begging.",
-    "This is a personal attack on your computer.",
-    "Your browser is contemplating retirement.",
-    "Your laptop's last words: 'Why?'",
-    "This is violence against electronics.",
-    "You could heat a small apartment with your CPU right now.",
-    "Even your taskbar is judging you.",
-    "Your computer didn't sign up for this abuse.",
-    "Plot twist: None of those tabs are important.",
+    "Skibidi tabs. Your brain is fully rotted.",
+    "Bombardiro Crocodilo just dropped on your RAM.",
+    "Tralalero Tralala, your CPU is gone.",
+    "-9999 aura. Unrecoverable.",
+    "Bro is speedrunning a thermal shutdown.",
+    "Only in Ohio do people have this many tabs.",
+    "Your browser is giving 'Windows XP in 2026'.",
+    "Your tabs need their own zip code.",
+    "This isn't multitasking, it's brainrot farming.",
+    "Plot twist: none of those tabs are important.",
   ],
   HELP: [
-    "This is a cry for help wrapped in tabs.",
-    "Seek professional assistance.",
-    "Your laptop filed a restraining order.",
-    "Congratulations, you broke the meter.",
-    "At this point, it's performance art.",
-    "NASA called. They want their workload back.",
-    "You don't have tabs. You have a lifestyle problem.",
-    "Sir/Ma'am, this is a Wendy's, not a data center.",
-    "I'm not angry, I'm just... deeply concerned.",
-    "Your browser history is now a horror novel.",
-    "Even Chrome gave up counting.",
-    "Your RAM left. It's not coming back.",
-    "Therapists should charge extra for this.",
+    "Tung Tung Tung Sahur is coming for your tabs.",
+    "Brr Brr Patapim. Your laptop has left the chat.",
+    "Chimpanzini Bananini levels of unwell.",
+    "Ballerina Cappuccina couldn't dance through this many tabs.",
+    "You don't have tabs. You have a lore.",
+    "Your RAM filed for emotional damages.",
+    "Even the brainrot has brainrot.",
+    "Negative aura so big it has its own gravity.",
+    "This is a cry for help in 100+ tabs.",
+    "Ok so 6... 7... 100+ tabs?? 💀",
+    "Your search history is a horror movie now.",
   ],
 };
 
 // Performance impact estimations (intentionally dramatic)
-export const PERFORMANCE_IMPACTS = {
+export const PERFORMANCE_IMPACTS: Record<
+  ShameLevel,
+  { memory: string; brainCells: string; cpuStress: string }
+> = {
   HEALTHY: {
     memory: "~200-500 MB",
-    focusImpact: "Focus remains intact",
-    cpuStress: "Minimal",
+    brainCells: "All of them. Built different.",
+    cpuStress: "Chillin'",
   },
   RISKY: {
     memory: "~500 MB - 1 GB",
-    focusImpact: "Slight cognitive load",
-    cpuStress: "Noticeable",
+    brainCells: "A few started doom-scrolling",
+    cpuStress: "Mildly sus",
   },
   DECLINING: {
     memory: "~1-2 GB",
-    focusImpact: "High cognitive load detected",
-    cpuStress: "Your fan is working overtime",
+    brainCells: "Half are watching Skibidi Toilet",
+    cpuStress: "Fan is giving jet engine",
   },
   CRYING: {
     memory: "~2-4 GB",
-    focusImpact: "Focus has left the building",
-    cpuStress: "Thermal throttling imminent",
+    brainCells: "Rotted. Gone. Reduced to atoms.",
+    cpuStress: "Thermal throttling, no cap",
   },
   HELP: {
     memory: "4+ GB (honestly, who knows)",
-    focusImpact: "What even is focus anymore?",
+    brainCells: "Tralalero Tralala",
     cpuStress: "CPU is writing its memoir",
   },
-} as const;
+};
 
-// Get shame level based on tab count
-export function getShameLevel(tabCount: number): keyof typeof SHAME_LEVELS {
+// Get brainrot level based on tab count
+export function getShameLevel(tabCount: number): ShameLevel {
   if (tabCount <= SHAME_LEVELS.HEALTHY.max) return "HEALTHY";
   if (tabCount <= SHAME_LEVELS.RISKY.max) return "RISKY";
   if (tabCount <= SHAME_LEVELS.DECLINING.max) return "DECLINING";
@@ -148,15 +152,22 @@ export function getShameLevel(tabCount: number): keyof typeof SHAME_LEVELS {
   return "HELP";
 }
 
-// Get a random message for the current shame level
-export function getRandomMessage(level: keyof typeof SHAME_LEVELS): string {
+// Get a random message for the current brainrot level
+export function getRandomMessage(level: ShameLevel): string {
   const messages = SHAME_MESSAGES[level];
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
-// Calculate shame percentage (0-100, capped)
+// Calculate brainrot percentage (0-100, capped)
 export function getShamePercentage(tabCount: number): number {
-  // Max out at 100 tabs for the meter, but go beyond for "HELP" level
-  const percentage = Math.min((tabCount / 100) * 100, 100);
-  return percentage;
+  return Math.min(tabCount, 100);
+}
+
+// Aura points: positive under 10 tabs, deeply negative after that.
+export function getAura(tabCount: number): number {
+  return (10 - tabCount) * 100;
+}
+
+export function formatAura(aura: number): string {
+  return `${aura > 0 ? "+" : ""}${aura.toLocaleString()} aura`;
 }

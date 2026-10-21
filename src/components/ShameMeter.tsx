@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import { getShamePercentage, SHAME_LEVELS, type getShameLevel } from "@/lib/constants";
+import { getShamePercentage, SHAME_LEVELS, type ShameLevel } from "@/lib/constants";
 
 interface ShameMeterProps {
   tabCount: number;
-  shameLevel: ReturnType<typeof getShameLevel>;
+  shameLevel: ShameLevel;
 }
 
 export function ShameMeter({ tabCount, shameLevel }: ShameMeterProps) {
@@ -30,7 +30,7 @@ export function ShameMeter({ tabCount, shameLevel }: ShameMeterProps) {
     <div className="w-full space-y-3">
       {/* Meter Label */}
       <div className="flex justify-between items-center text-sm font-medium">
-        <span className="text-muted-foreground">Shame Level</span>
+        <span className="text-muted-foreground">Brainrot Level</span>
         <motion.span
           key={config.label}
           initial={{ opacity: 0, y: -10 }}
@@ -40,7 +40,7 @@ export function ShameMeter({ tabCount, shameLevel }: ShameMeterProps) {
             color: `hsl(var(--${config.color}))`,
           }}
         >
-          {config.label}
+          {config.label} {config.emoji}
         </motion.span>
       </div>
 

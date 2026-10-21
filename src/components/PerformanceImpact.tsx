@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Cpu, HardDrive, Brain } from "lucide-react";
-import { PERFORMANCE_IMPACTS, SHAME_LEVELS, type getShameLevel } from "@/lib/constants";
+import { PERFORMANCE_IMPACTS, SHAME_LEVELS, type ShameLevel } from "@/lib/constants";
 
 interface PerformanceImpactProps {
-  shameLevel: ReturnType<typeof getShameLevel>;
+  shameLevel: ShameLevel;
 }
 
 export function PerformanceImpact({ shameLevel }: PerformanceImpactProps) {
@@ -18,8 +18,8 @@ export function PerformanceImpact({ shameLevel }: PerformanceImpactProps) {
     },
     {
       icon: Brain,
-      label: "Focus Impact",
-      value: impact.focusImpact,
+      label: "Brain Cells",
+      value: impact.brainCells,
     },
     {
       icon: Cpu,
@@ -36,7 +36,7 @@ export function PerformanceImpact({ shameLevel }: PerformanceImpactProps) {
       className="space-y-2"
     >
       <h3 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground text-center">
-        Performance Impact
+        Brainrot Diagnostics
       </h3>
 
       <div className="grid gap-1.5">
@@ -73,7 +73,7 @@ export function PerformanceImpact({ shameLevel }: PerformanceImpactProps) {
 
       {/* Disclaimer */}
       <p className="text-[9px] text-center text-muted-foreground/50 italic pt-1">
-        * Estimates are emotionally accurate, not technically.
+        * Estimates are emotionally accurate, not technically. No cap.
       </p>
     </motion.div>
   );

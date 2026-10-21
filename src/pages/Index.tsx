@@ -2,7 +2,7 @@ import { ShameCard } from "@/components/ShameCard";
 
 const Index = () => {
   return (
-    <main className="min-h-screen w-full flex items-center justify-center bg-background p-4">
+    <main className="w-full bg-background p-2">
       <ShameCard />
     </main>
   );
