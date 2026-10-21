@@ -5,12 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.app.json && vite build",
-    "zip": "npm run build && cd dist && zip -r ../tab-brainrot-meter.zip .",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "test": "vitest run",
     "lint": "eslint .",
+    "build": "npm run typecheck && vite build",
+    "check:manifest": "node scripts/check-manifest.mjs",
+    "zip": "npm run build && npm run check:manifest && cd dist && zip -r ../tab-brainrot-meter.zip .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
@@ -20,8 +25,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sonner": "^1.7.4",
-    "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
@@ -30,7 +34,7 @@
     "@types/node": "^22.16.5",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitejs/plugin-react-swc": "^4.3.3",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -38,9 +42,11 @@
     "globals": "^15.15.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
-    "vite": "^5.4.19"
+    "vite": "^7.3.7",
+    "vitest": "^5.0.5"
   },
   "description": "Chrome extension that roasts your tab count in brainrot"
 }

@@ -3,6 +3,7 @@
   "name": "Tab Brainrot Meter",
   "version": "1.0.0",
   "description": "Counts your open tabs and roasts your brainrot level, from Sigma to Tung Tung Tung Sahur. Then helps you clean up.",
+  "minimum_chrome_version": "116",
   "action": {
     "default_popup": "index.html",
     "default_icon": {
@@ -24,6 +25,9 @@
     "https://live.dodopayments.com/*",
     "https://test.dodopayments.com/*"
   ],
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src https://live.dodopayments.com https://test.dodopayments.com; base-uri 'none'; form-action 'none'"
+  },
   "background": {
     "service_worker": "background.js",
     "type": "module"
