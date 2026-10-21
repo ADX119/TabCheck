@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { RefreshCw, Trash2 } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { useTabCount } from "@/hooks/useTabCount";
+import { usePro } from "@/hooks/usePro";
 import { getShameLevel, getRandomMessage } from "@/lib/constants";
 import { TabCounter } from "./TabCounter";
 import { ShameMeter } from "./ShameMeter";
 import { ShameMessage } from "./ShameMessage";
 import { PerformanceImpact } from "./PerformanceImpact";
-import { Button } from "./ui/button";
+import { CleanupPanel } from "./CleanupPanel";
+import { SupportFooter } from "./SupportFooter";
 
 export function ShameCard() {
-  const { tabCount, isLoading, refresh, closeOldTabs } = useTabCount();
+  const { tabCount, isLoading, refresh } = useTabCount();
+  const isPro = usePro();
   const [message, setMessage] = useState("");
 
   const shameLevel = getShameLevel(tabCount);
@@ -22,13 +25,9 @@ export function ShameCard() {
     }
   }, [tabCount, shameLevel, isLoading]);
 
-  const handleCloseUnused = () => {
-    closeOldTabs(10); // Keep 10 most recent tabs
-  };
-
   if (isLoading) {
     return (
-      <div className="w-80 p-6 bg-card rounded-2xl border border-border shadow-2xl">
+      <div className="w-full p-6 bg-card rounded-2xl border border-border shadow-2xl">
         <div className="flex items-center justify-center h-48">
           <motion.div
             animate={{ rotate: 360 }}
@@ -46,12 +45,12 @@ export function ShameCard() {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
-      className="w-80 p-4 bg-card rounded-2xl border border-border shadow-2xl space-y-4"
+      className="w-full p-4 bg-card rounded-2xl border border-border shadow-2xl space-y-4"
     >
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-xs font-bold uppercase tracking-widest text-foreground">
-          Tab Shame Meter
+          Tab Brainrot Meter
         </h1>
         <button
           onClick={refresh}
@@ -74,18 +73,11 @@ export function ShameCard() {
       {/* Performance Impact */}
       <PerformanceImpact shameLevel={shameLevel} />
 
-      {/* Close Unused Tabs Button */}
-      {tabCount > 10 && (
-        <Button
-          onClick={handleCloseUnused}
-          variant="destructive"
-          size="sm"
-          className="w-full gap-2"
-        >
-          <Trash2 size={14} />
-          Close Unused Tabs (Keep 10)
-        </Button>
-      )}
+      {/* Cleanup actions (free + Pro) */}
+      <CleanupPanel tabCount={tabCount} isPro={isPro} onTabsChanged={refresh} />
+
+      {/* Upgrade + donate */}
+      <SupportFooter isPro={isPro} />
     </motion.div>
   );
 }

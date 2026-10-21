@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { SHAME_LEVELS, type getShameLevel } from "@/lib/constants";
+import { SHAME_LEVELS, formatAura, getAura, type ShameLevel } from "@/lib/constants";
 
 interface TabCounterProps {
   count: number;
-  shameLevel: ReturnType<typeof getShameLevel>;
+  shameLevel: ShameLevel;
 }
 
 export function TabCounter({ count, shameLevel }: TabCounterProps) {
@@ -42,8 +42,14 @@ export function TabCounter({ count, shameLevel }: TabCounterProps) {
         transition={{ delay: 0.5 }}
         className="text-xs text-muted-foreground/60"
       >
-        {count === 1 ? "tab" : "tabs"} demanding attention
+        {count === 1 ? "tab" : "tabs"} rotting your brain {config.emoji}
       </motion.p>
+      <p
+        className="font-mono text-xs font-semibold"
+        style={{ color: `hsl(var(--${config.color}))` }}
+      >
+        {formatAura(getAura(count))}
+      </p>
     </div>
   );
 }

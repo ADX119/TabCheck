@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import { SHAME_LEVELS, type getShameLevel } from "@/lib/constants";
+import { SHAME_LEVELS, type ShameLevel } from "@/lib/constants";
 
 interface ShameMessageProps {
   message: string;
-  shameLevel: ReturnType<typeof getShameLevel>;
+  shameLevel: ShameLevel;
 }
 
 export function ShameMessage({ message, shameLevel }: ShameMessageProps) {
