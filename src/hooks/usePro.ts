@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { isProUser, onProUnlocked } from "@/lib/pro";
+import { isProUser, onLicenseChanged } from "@/lib/pro";
 
 export function usePro() {
   const [isPro, setIsPro] = useState(false);
 
   useEffect(() => {
-    isProUser().then(setIsPro);
-    onProUnlocked(() => setIsPro(true));
+    const check = () => {
+      isProUser().then(setIsPro);
+    };
+    check();
+    return onLicenseChanged(check);
   }, []);
 
   return isPro;

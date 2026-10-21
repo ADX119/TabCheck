@@ -1,9 +1,3 @@
-import ExtPay from "extpay";
-import { EXTPAY_ID } from "./config";
-
-// Required by ExtensionPay: keeps the paid status in sync.
-ExtPay(EXTPAY_ID).startBackground();
-
 const THRESHOLDS = [10, 15, 20, 25, 35, 50, 67, 75, 100];
 const LAST_NOTIFIED_KEY = "lastNotifiedThreshold";
 

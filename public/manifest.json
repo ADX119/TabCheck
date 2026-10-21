@@ -13,19 +13,21 @@
     },
     "default_title": "Tab Brainrot Meter"
   },
-  "permissions": ["notifications", "storage"],
-  "optional_permissions": ["tabs"],
+  "permissions": [
+    "notifications",
+    "storage"
+  ],
+  "optional_permissions": [
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://live.dodopayments.com/*",
+    "https://test.dodopayments.com/*"
+  ],
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": ["https://extensionpay.com/*"],
-      "js": ["ExtPay.js"],
-      "run_at": "document_start"
-    }
-  ],
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",

@@ -12,11 +12,13 @@ Tab Brainrot Meter does not collect, sell or share your browsing data.
 
 ## Payments
 
-Pro upgrades are handled by [ExtensionPay](https://extensionpay.com) and [Stripe](https://stripe.com). When you check the paid status or buy Pro, the extension talks to ExtensionPay using a random user id. Payment details and your email go directly to ExtensionPay/Stripe and are never seen or stored by this extension. See the [ExtensionPay privacy policy](https://extensionpay.com/privacy).
+Pro upgrades are sold through [Dodo Payments](https://dodopayments.com), which acts as the merchant of record. Payment details and your email go directly to Dodo and are never seen by this extension. Dodo's own privacy policy applies to checkout.
+
+When you enter a license key, the extension sends that key to Dodo to activate it, then re-checks it about once a week. The key is stored in your browser's local extension storage. Nothing else is sent.
 
 ## Donations
 
-The donate link opens an external site. Anything you do there is covered by that site's privacy policy.
+The donate link opens an external site, covered by that site's privacy policy. The "Tip in SOL" button only copies a public wallet address to your clipboard.
 
 ## Contact
 
