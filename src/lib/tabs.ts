@@ -66,6 +66,18 @@ function byMostRecent(a: TabInfo, b: TabInfo): number {
   return (b.lastAccessed || 0) - (a.lastAccessed || 0);
 }
 
+// Only ordinary web pages go into (and come back out of) the graveyard. This
+// keeps tampered storage from reopening javascript:, file: or chrome: URLs.
+export function isRestorableUrl(url: string | undefined): url is string {
+  if (!url) return false;
+  try {
+    const { protocol } = new URL(url);
+    return protocol === "http:" || protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 function normalizeUrl(url = ""): string {
   return url.split("#")[0].replace(/\/$/, "");
 }
@@ -103,7 +115,7 @@ export function pickIdleTabs(tabs: TabInfo[], hours: number): TabInfo[] {
 export async function closeTabs(tabs: TabInfo[]): Promise<number> {
   const batchId = Date.now();
   const entries: GraveEntry[] = tabs
-    .filter((t) => t.url && !t.url.startsWith("chrome://newtab"))
+    .filter((t) => isRestorableUrl(t.url))
     .map((t, i) => ({
       id: `${batchId}-${i}`,
       url: t.url!,
@@ -128,7 +140,8 @@ export async function closeTabs(tabs: TabInfo[]): Promise<number> {
 export async function getGraveyard(): Promise<GraveEntry[]> {
   if (!isExtension) return [...mockGraveyard];
   const data = await chrome.storage.local.get(GRAVEYARD_KEY);
-  return (data[GRAVEYARD_KEY] as GraveEntry[]) || [];
+  const entries = data[GRAVEYARD_KEY];
+  return Array.isArray(entries) ? entries : [];
 }
 
 async function saveGraveyard(entries: GraveEntry[]): Promise<void> {
@@ -142,6 +155,7 @@ async function saveGraveyard(entries: GraveEntry[]): Promise<void> {
 export async function restoreTabs(entries: GraveEntry[]): Promise<void> {
   const ids = new Set(entries.map((e) => e.id));
   for (const entry of entries) {
+    if (!isRestorableUrl(entry.url)) continue;
     if (isExtension) {
       await chrome.tabs.create({ url: entry.url, active: false });
     } else {

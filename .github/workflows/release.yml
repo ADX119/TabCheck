@@ -1,0 +1,65 @@
+name: Release
+
+# Bump "version" in package.json and public/manifest.json, merge, then push a
+# matching tag (e.g. `git tag v1.0.1 && git push origin v1.0.1`).
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Build and publish release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Secrets live in the "chrome-web-store" environment. Add yourself as a
+    # required reviewer there so every store upload needs your approval.
+    environment: chrome-web-store
+    permissions:
+      contents: write # create the GitHub Release
+    env:
+      # Exposed at job level so the upload step can be skipped until it's set.
+      CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --ignore-scripts
+      - run: npm audit --omit=dev --audit-level=moderate
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+      - name: Check manifest and that the tag matches the version
+        run: npm run check:manifest
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+
+      - name: Package extension
+        run: cd dist && zip -r "../tab-brainrot-meter-${GITHUB_REF_NAME}.zip" .
+
+      - name: Create GitHub Release
+        run: gh release create "$GITHUB_REF_NAME" "tab-brainrot-meter-${GITHUB_REF_NAME}.zip" --generate-notes --verify-tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      # Uploads a new draft to the Chrome Web Store. It does NOT publish:
+      # open the developer dashboard and click "Submit for review" yourself.
+      # Skipped until the store secrets are added.
+      - name: Upload to Chrome Web Store
+        if: ${{ env.CWS_EXTENSION_ID != '' }}
+        run: npx --yes chrome-webstore-upload-cli@4.0.2 upload --source "tab-brainrot-meter-${GITHUB_REF_NAME}.zip"
+        env:
+          EXTENSION_ID: ${{ env.CWS_EXTENSION_ID }}
+          PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}

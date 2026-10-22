@@ -16,7 +16,14 @@ interface StoredLicense {
 async function readLicense(): Promise<StoredLicense | undefined> {
   if (!isExtension) return undefined;
   const data = await chrome.storage.local.get(LICENSE_KEY);
-  return data[LICENSE_KEY] as StoredLicense | undefined;
+  const license = data[LICENSE_KEY] as Partial<StoredLicense> | undefined;
+  const isWellFormed =
+    typeof license?.key === "string" &&
+    typeof license.instanceId === "string" &&
+    typeof license.validatedAt === "number" &&
+    // A validatedAt in the future would skip re-checks forever.
+    license.validatedAt <= Date.now();
+  return isWellFormed ? (license as StoredLicense) : undefined;
 }
 
 async function writeLicense(license: StoredLicense | null): Promise<void> {
@@ -30,6 +37,7 @@ async function postDodo<T>(path: string, body: object): Promise<T> {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(10_000),
   });
   if (!res.ok) throw new Error(`Dodo ${path} failed: ${res.status}`);
   return res.json();
@@ -41,10 +49,11 @@ export async function activateLicense(rawKey: string): Promise<string | null> {
   if (!key) return "Paste your license key first.";
   if (!isExtension) return "License keys only work inside the installed extension.";
   try {
-    const instance = await postDodo<{ id: string }>("/licenses/activate", {
+    const instance = await postDodo<{ id?: unknown }>("/licenses/activate", {
       license_key: key,
       name: `Chrome ${new Date().toISOString().slice(0, 10)}`,
     });
+    if (typeof instance.id !== "string") throw new Error("Unexpected Dodo response");
     await writeLicense({ key, instanceId: instance.id, validatedAt: Date.now() });
     return null;
   } catch {
@@ -60,11 +69,11 @@ export async function isProUser(): Promise<boolean> {
   if (Date.now() < recheckAfter) return true;
 
   try {
-    const { valid } = await postDodo<{ valid: boolean }>("/licenses/validate", {
+    const { valid } = await postDodo<{ valid?: unknown }>("/licenses/validate", {
       license_key: license.key,
       license_key_instance_id: license.instanceId,
     });
-    if (!valid) {
+    if (valid !== true) {
       // Refunded, disabled or expired.
       await writeLicense(null);
       return false;
@@ -89,7 +98,8 @@ export async function removeLicense(): Promise<void> {
   await writeLicense(null);
 }
 
-export const canUpgrade = DODO_CHECKOUT_URL !== "";
+// Only ever send buyers to an https checkout page.
+export const canUpgrade = DODO_CHECKOUT_URL.startsWith("https://");
 
 export function openUpgradePage(): void {
   if (!canUpgrade) {

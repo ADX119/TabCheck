@@ -48,12 +48,56 @@ The extension calls Dodo's public license endpoints directly (no secret API key 
 
 ```sh
 npm install
-npm run dev     # preview the popup in a normal browser with fake tabs
-npm run build   # type-check and build the extension into dist/
-npm run zip     # build and create tab-brainrot-meter.zip for the Chrome Web Store
+npm run dev        # preview the popup in a normal browser with fake tabs
+npm test           # unit tests
+npm run lint
+npm run build      # type-check and build the extension into dist/
+npm run zip        # build, check the manifest, create tab-brainrot-meter.zip
 ```
 
 Load it locally: open `chrome://extensions`, turn on Developer mode, click **Load unpacked** and pick the `dist/` folder.
+
+## CI/CD
+
+| Workflow | When | What it does |
+|---|---|---|
+| **CI** (`ci.yml`) | Every PR and push to `main` | Clean install, dependency audit, lint, type check, unit tests, build, manifest guard, and a downloadable zip under the run's *Artifacts* |
+| **CodeQL** (`codeql.yml`) | Every PR, push to `main`, and weekly | GitHub's security scanner for the code and the workflows. Findings show under *Security → Code scanning*. |
+| **Release** (`release.yml`) | Pushing a tag like `v1.0.1` | Runs every check, confirms the tag matches the manifest version, creates a GitHub Release with the zip, and uploads a draft to the Chrome Web Store (once secrets are set) |
+| **Dependabot** (`dependabot.yml`) | Weekly | Opens PRs for npm and GitHub Actions updates, and right away for security fixes |
+
+The manifest guard (`scripts/check-manifest.mjs`) fails the build if permissions, host access or the content security policy change. If you add a permission on purpose, update the allowlist in that script in the same PR.
+
+### Releasing a new version
+
+1. Bump `version` in both `package.json` and `public/manifest.json` (e.g. `1.0.1`) and merge it into `main`.
+2. Tag the merged commit and push the tag:
+   ```sh
+   git checkout main && git pull
+   git tag v1.0.1 && git push origin v1.0.1
+   ```
+3. The Release workflow builds and checks everything, then creates the GitHub Release.
+4. If Chrome Web Store secrets are set, it uploads the new version as a draft. Open the [developer dashboard](https://chrome.google.com/webstore/devconsole) and click **Submit for review**.
+
+### Chrome Web Store auto-upload (optional)
+
+Follow the [chrome-webstore-upload-keys guide](https://github.com/fregante/chrome-webstore-upload-keys) to get the OAuth credentials. Then in GitHub: **Settings → Environments → New environment** named `chrome-web-store`. Add yourself under *Required reviewers*, and add these environment secrets:
+
+`CWS_EXTENSION_ID`, `CWS_PUBLISHER_ID`, `CWS_CLIENT_ID`, `CWS_CLIENT_SECRET`, `CWS_REFRESH_TOKEN`
+
+Without them the upload step is skipped and you upload the zip from the GitHub Release by hand.
+
+## Security
+
+See [`SECURITY.md`](SECURITY.md) for how to report a vulnerability and how the extension is protected.
+
+**Owner checklist.** These settings can't be set from code and matter most:
+
+- [ ] **Two-factor authentication** on GitHub, the Google account that owns the Chrome Web Store listing, and Dodo Payments. A stolen store account could push a malicious update to every user.
+- [ ] **Branch protection on `main`** (Settings → Rules → Rulesets): require a pull request, require the *Lint, test, build* and *Analyze code* checks to pass, block force pushes and deletions.
+- [ ] **Private vulnerability reporting** (Settings → Code security → enable it), plus **Dependabot alerts** and **secret scanning with push protection**.
+- [ ] **Actions:** Settings → Actions → General → *Workflow permissions: Read repository contents*.
+- [ ] Never commit API keys or OAuth tokens. Store secrets only in the `chrome-web-store` environment.
 
 ## Permissions
 

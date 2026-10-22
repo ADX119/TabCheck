@@ -9,6 +9,8 @@ interface SupportFooterProps {
   isPro: boolean;
 }
 
+const showDonate = DONATION_URL.startsWith("https://");
+
 export function SupportFooter({ isPro }: SupportFooterProps) {
   const [showKeyInput, setShowKeyInput] = useState(false);
   const [licenseKey, setLicenseKey] = useState("");
@@ -80,9 +82,9 @@ export function SupportFooter({ isPro }: SupportFooterProps) {
         )
       )}
 
-      {(DONATION_URL || SOLANA_TIP_ADDRESS) && (
+      {(showDonate || SOLANA_TIP_ADDRESS) && (
         <div className="flex items-center justify-center gap-3 text-[11px] text-muted-foreground">
-          {DONATION_URL && (
+          {showDonate && (
             <a
               href={DONATION_URL}
               target="_blank"
