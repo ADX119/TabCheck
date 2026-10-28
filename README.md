@@ -31,7 +31,7 @@ The popup footer also has an optional donate link and a "Tip in SOL" button that
 
 Extension settings are in `src/config.ts`. The website is in `site/`.
 
-1. **Website:** the site at https://tab-brainrot-meter.vercel.app (pricing, Terms, Privacy, Refund and Contact pages) is what Dodo reviews and what the Chrome Web Store links to for the privacy policy. It deploys from `site/` on every push to `main`. See [Website](#website).
+1. **Website:** the site at https://tab-brainrot.vercel.app (pricing, Terms, Privacy, Refund and Contact pages) is what Dodo reviews and what the Chrome Web Store links to for the privacy policy. It deploys from `site/` on every push to `main`. See [Website](#website).
 2. **Dodo Payments account:** sign up at https://dodopayments.com. You can build and test everything in **test mode** straight away.
 3. **Pro product:** in the Dodo dashboard, create a License Key entitlement under **Entitlements** (activations limit **3**, no expiration, automatic fulfillment), then create a one-time $4.99 product and attach the entitlement to it. Buyers get the key by email after paying.
 4. **Checkout link:** copy the product's checkout link into `DODO_CHECKOUT_URL`. Until it's set, the Go Pro button is hidden and Pro buttons say "coming soon". Swap the "Checkout opens at launch" placeholder in `site/index.html` for the same link.

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Counts your open tabs and roasts your brainrot level, from Sigma to Tung Tung Tung Sahur. Then helps you clean up.",
   "minimum_chrome_version": "116",
-  "homepage_url": "https://tab-brainrot-meter.vercel.app",
+  "homepage_url": "https://tab-brainrot.vercel.app",
   "action": {
     "default_popup": "index.html",
     "default_icon": {

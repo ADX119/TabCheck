@@ -4,4 +4,4 @@ Contact: mailto:tabcheckenquiry@gmail.com
 Expires: 2027-10-28T00:00:00.000Z
 Policy: https://github.com/ADX119/TabCheck/blob/main/SECURITY.md
 Preferred-Languages: en
-Canonical: https://tab-brainrot-meter.vercel.app/.well-known/security.txt
+Canonical: https://tab-brainrot.vercel.app/.well-known/security.txt
