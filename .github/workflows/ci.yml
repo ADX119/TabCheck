@@ -51,6 +51,9 @@ jobs:
       - name: Check manifest, permissions and security policy
         run: npm run check:manifest
 
+      - name: Check website (placeholders, links, sitemap, security headers)
+        run: npm run check:site
+
       - name: Package extension
         run: cd dist && zip -r ../tab-brainrot-meter.zip .
 
