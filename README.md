@@ -50,7 +50,8 @@ The extension calls Dodo's public license endpoints directly (no secret API key 
 
 A static site in `site/` with no build step and no dependencies, deployed to Vercel (project root directory `site`). It has the homepage with pricing, the legal pages, `robots.txt`, `sitemap.xml`, `/.well-known/security.txt` and a 404 page.
 
-- **No cookies, analytics or third-party requests**, so no cookie banner is needed. Fonts and icons are served from the site itself. Keep it that way, or the Privacy Policy has to change.
+- **No cookies or third-party requests**, so no cookie banner is needed. Fonts and icons are served from the site itself. Keep it that way, or the Privacy Policy has to change.
+- **Visitor stats:** Vercel Web Analytics (cookie-free) via `/_vercel/insights/script.js` on every page. Turn it on in the Vercel project under **Analytics → Enable**; the script returns 404 until then. Its data points are listed in the Privacy Policy's "Visitor statistics" section. Update that section if you add Speed Insights or custom events.
 - **Security headers** live in `site/vercel.json`: a strict CSP (`default-src 'none'`, scripts and styles only from the site), HSTS, no framing, `nosniff` and a locked-down Permissions-Policy. Because of the CSP, pages can't use inline `<script>`, `<style>`, `style=""` or `onclick=""`.
 - **Site guard:** `npm run check:site` (also run in CI) fails on unfilled `{{PLACEHOLDERS}}`, broken internal links, assets from other domains, inline code the CSP blocks, a sitemap or canonical URL that doesn't match the pages, legal pages missing from a footer, missing security headers, or an expired `security.txt`.
 - **Keep the facts in sync:** price, features, refund window and activation limit appear in the extension, the site and Dodo. Change all three together. When a policy changes, update its "Effective" date and the `lastmod` in `sitemap.xml`. Renew the `Expires` date in `security.txt` every year; the guard fails once it passes.
