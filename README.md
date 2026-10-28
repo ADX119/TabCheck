@@ -29,20 +29,33 @@ The popup footer also has an optional donate link and a "Tip in SOL" button that
 
 ## Setup before publishing
 
-Everything you need to fill in is in `src/config.ts`.
+Extension settings are in `src/config.ts`. The website is in `site/`.
 
-1. **Dodo Payments account:** sign up at https://dodopayments.com and finish identity and business verification. Individuals can choose the unregistered business type. Have your PAN, a photo ID, proof of address and your bank details ready.
-2. **Pro product:** in the Dodo dashboard, create a one-time product (e.g. $4.99) and turn on **License keys**. An activation limit of 3 lets people use it on a few browsers. Buyers get the key by email after paying.
-3. **Checkout link:** copy the product's checkout link into `DODO_CHECKOUT_URL`. Until it's set, the Go Pro button is hidden and Pro buttons say "coming soon".
-4. **Test, then go live:** keep `DODO_MODE = "test"` and buy with a Dodo test card to check the whole flow (pay → email with key → "Enter your license key" → Pro unlocked). Then switch to `"live"` and use the live checkout link.
-5. **Price label:** update `PRO_PRICE_LABEL` to match your Dodo price.
-6. **Donations (optional):** put a tip link (Ko-fi, Buy Me a Coffee, Razorpay payment page, UPI...) in `DONATION_URL`, and your Phantom **public** Solana address in `SOLANA_TIP_ADDRESS`.
-7. **Privacy policy:** add your contact email to `PRIVACY.md` and host it somewhere public (GitHub Pages or a gist).
+1. **Website:** the site at https://tab-brainrot-meter.vercel.app (pricing, Terms, Privacy, Refund and Contact pages) is what Dodo reviews and what the Chrome Web Store links to for the privacy policy. It deploys from `site/` on every push to `main`. See [Website](#website).
+2. **Dodo Payments account:** sign up at https://dodopayments.com. You can build and test everything in **test mode** straight away.
+3. **Pro product:** in the Dodo dashboard, create a License Key entitlement under **Entitlements** (activations limit **3**, no expiration, automatic fulfillment), then create a one-time $4.99 product and attach the entitlement to it. Buyers get the key by email after paying.
+4. **Checkout link:** copy the product's checkout link into `DODO_CHECKOUT_URL`. Until it's set, the Go Pro button is hidden and Pro buttons say "coming soon". Swap the "Checkout opens at launch" placeholder in `site/index.html` for the same link.
+5. **Test the whole flow:** keep `DODO_MODE = "test"`, load the extension unpacked, and buy with a Dodo test card: pay → email with key → "Enter your license key" → Pro unlocked → refund it in the dashboard → Pro is removed at the next check.
+6. **Verification:** fill in Product Information (use the website URL and the same description and price shown on it), then identity (Persona: photo ID and selfie) and bank details. The bank account name must match your ID. Dodo checks the form against the live site, so publish it first.
+7. **Go live:** after approval, switch to `DODO_MODE = "live"`, use the live checkout link, and bump the version.
+8. **Price label:** keep `PRO_PRICE_LABEL`, the site's pricing section and Dodo's price in sync.
+9. **Donations (optional):** put a tip link (Ko-fi, Buy Me a Coffee, Razorpay payment page, UPI...) in `DONATION_URL`, and your Phantom **public** Solana address in `SOLANA_TIP_ADDRESS`.
 
 ### How Pro unlocking works
 
 The extension calls Dodo's public license endpoints directly (no secret API key in the extension):
 `POST /licenses/activate` when a key is entered, `POST /licenses/validate` once every 7 days, and `POST /licenses/deactivate` when the user clicks "Remove key". A refunded or disabled key stops being Pro at the next check. If Dodo can't be reached, paying users keep Pro.
+
+## Website
+
+A static site in `site/` with no build step and no dependencies, deployed to Vercel (project root directory `site`). It has the homepage with pricing, the legal pages, `robots.txt`, `sitemap.xml`, `/.well-known/security.txt` and a 404 page.
+
+- **No cookies, analytics or third-party requests**, so no cookie banner is needed. Fonts and icons are served from the site itself. Keep it that way, or the Privacy Policy has to change.
+- **Security headers** live in `site/vercel.json`: a strict CSP (`default-src 'none'`, scripts and styles only from the site), HSTS, no framing, `nosniff` and a locked-down Permissions-Policy. Because of the CSP, pages can't use inline `<script>`, `<style>`, `style=""` or `onclick=""`.
+- **Site guard:** `npm run check:site` (also run in CI) fails on unfilled `{{PLACEHOLDERS}}`, broken internal links, assets from other domains, inline code the CSP blocks, a sitemap or canonical URL that doesn't match the pages, legal pages missing from a footer, missing security headers, or an expired `security.txt`.
+- **Keep the facts in sync:** price, features, refund window and activation limit appear in the extension, the site and Dodo. Change all three together. When a policy changes, update its "Effective" date and the `lastmod` in `sitemap.xml`. Renew the `Expires` date in `security.txt` every year; the guard fails once it passes.
+
+Preview locally: `npx serve site` (or any static server pointed at `site/`).
 
 ## Development
 
@@ -61,7 +74,7 @@ Load it locally: open `chrome://extensions`, turn on Developer mode, click **Loa
 
 | Workflow | When | What it does |
 |---|---|---|
-| **CI** (`ci.yml`) | Every PR and push to `main` | Clean install, dependency audit, lint, type check, unit tests, build, manifest guard, and a downloadable zip under the run's *Artifacts* |
+| **CI** (`ci.yml`) | Every PR and push to `main` | Clean install, dependency audit, lint, type check, unit tests, build, manifest guard, site guard, and a downloadable zip under the run's *Artifacts* |
 | **CodeQL** (`codeql.yml`) | Every PR, push to `main`, and weekly | GitHub's security scanner for the code and the workflows. Findings show under *Security → Code scanning*. |
 | **Release** (`release.yml`) | Pushing a tag like `v1.0.1` | Runs every check, confirms the tag matches the manifest version, creates a GitHub Release with the zip, and uploads a draft to the Chrome Web Store (once secrets are set) |
 | **Dependabot** (`dependabot.yml`) | Weekly | Opens PRs for npm and GitHub Actions updates, and right away for security fixes |

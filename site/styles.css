@@ -1,0 +1,539 @@
+/* Tab Brainrot Meter website. Colors come from the extension popup (src/index.css). */
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-latin-800-normal.woff2") format("woff2");
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+
+  --ink: #0f1218;
+  --panel: #171c24;
+  --line: #262d39;
+  --text: #e6eaf0;
+  --muted: #95a0b2;
+
+  /* The five brainrot levels, in order */
+  --l1: #22c35d;
+  --l2: #f2bd0d;
+  --l3: #f87c1b;
+  --l4: #ec3b3b;
+  --l5: #b366f0;
+
+  --level: var(--l5);
+
+  --sans: "Space Grotesk", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --measure: 68ch;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font: 400 1.0625rem/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--level);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+a:hover {
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 3px solid var(--level);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: -4rem;
+  padding: 0.5rem 1rem;
+  background: var(--text);
+  color: var(--ink);
+  font-weight: 700;
+  z-index: 10;
+}
+.skip:focus {
+  top: 0.5rem;
+}
+
+.wrap {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ─── Site header ─────────────────────────────────────────────── */
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.brand img {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+.masthead nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.95rem;
+}
+.masthead nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.masthead nav a:hover {
+  color: var(--text);
+}
+
+/* ─── Hero: the overcrowded tab strip ─────────────────────────── */
+
+.strip {
+  display: flex;
+  align-items: flex-end;
+  height: 44px;
+  padding: 0 var(--gutter);
+  background: #0a0d12;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.tabs {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  gap: 1px;
+  overflow: hidden;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 13rem;
+  padding: 0 0.6rem;
+  background: var(--panel);
+  border-radius: 8px 8px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tab.is-active {
+  background: var(--ink);
+  color: var(--text);
+}
+.tab .fav {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+.tab .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fav.f0 { background: var(--l1); }
+.fav.f1 { background: var(--l2); }
+.fav.f2 { background: var(--l3); }
+.fav.f3 { background: var(--l4); }
+.fav.f4 { background: var(--l5); }
+.fav.f5 { background: #5b8def; }
+.newtab {
+  flex: none;
+  align-self: center;
+  margin-left: 0.5rem;
+  color: var(--muted);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.hero {
+  padding-top: clamp(2.5rem, 7vw, 5rem);
+  padding-bottom: clamp(3rem, 8vw, 6rem);
+}
+.readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 1.5rem;
+  row-gap: 0.25rem;
+}
+.count {
+  margin: 0;
+  font: 800 clamp(4.5rem, 16vw, 10rem) / 0.9 var(--mono);
+  letter-spacing: -0.04em;
+  color: var(--level);
+  text-shadow: 0 0 40px color-mix(in srgb, var(--level) 35%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+.count small {
+  font: 500 clamp(1.25rem, 3vw, 1.75rem) / 1 var(--sans);
+  letter-spacing: 0;
+  color: var(--muted);
+  text-shadow: none;
+}
+.level {
+  margin: 0;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 700;
+}
+.meter {
+  height: 10px;
+  margin: 1.5rem 0 0;
+  background: var(--panel);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.meter span {
+  display: block;
+  height: 100%;
+  width: var(--fill, 100%);
+  background: var(--level);
+  border-radius: inherit;
+}
+.roast {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+}
+
+.hero h1 {
+  max-width: 18ch;
+  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+.lede {
+  max-width: 54ch;
+  margin: 1.25rem 0 0;
+  font-size: 1.15rem;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: 2rem;
+}
+.button {
+  display: inline-block;
+  padding: 0.8rem 1.4rem;
+  border-radius: 10px;
+  background: var(--text);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.button:hover {
+  background: #fff;
+  color: var(--ink);
+}
+.button.is-pending {
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  cursor: default;
+}
+
+/* ─── Sections ────────────────────────────────────────────────── */
+
+.section {
+  padding-top: clamp(3rem, 7vw, 5rem);
+  padding-bottom: clamp(3rem, 7vw, 5rem);
+  border-top: 1px solid var(--line);
+}
+.section h2 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.section > .wrap > p {
+  max-width: var(--measure);
+  margin: 0;
+  color: var(--muted);
+}
+
+/* The level ladder: a real ordered scale, so it's an ordered list */
+.ladder {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+.ladder li {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.25rem 1.5rem;
+  padding: 1.1rem 0 1.1rem 1.25rem;
+  border-left: 4px solid var(--rung);
+  border-bottom: 1px solid var(--line);
+}
+.ladder li:last-child {
+  border-bottom: 0;
+}
+.ladder .range {
+  grid-row: span 2;
+  font-family: var(--mono);
+  font-weight: 800;
+  color: var(--rung);
+}
+.ladder .name {
+  font-weight: 700;
+}
+.ladder .quote {
+  color: var(--muted);
+}
+.ladder .r1 { --rung: var(--l1); }
+.ladder .r2 { --rung: var(--l2); }
+.ladder .r3 { --rung: var(--l3); }
+.ladder .r4 { --rung: var(--l4); }
+.ladder .r5 { --rung: var(--l5); }
+
+/* Free vs Pro */
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 0;
+  margin-top: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.plan {
+  padding: 1.75rem;
+}
+.plan + .plan {
+  border-top: 1px solid var(--line);
+}
+@media (min-width: 44rem) {
+  .plan + .plan {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+}
+.plan.is-pro {
+  background: var(--panel);
+}
+.plan h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.price {
+  margin: 0.25rem 0 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.price small {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.plan ul {
+  margin: 1.25rem 0 0;
+  padding-left: 1.2rem;
+}
+.plan li + li {
+  margin-top: 0.4rem;
+}
+.plan .button {
+  margin-top: 1.5rem;
+}
+.fine {
+  max-width: var(--measure);
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* How you get Pro: a real sequence */
+.steps {
+  max-width: var(--measure);
+  margin: 1.5rem 0 0;
+  padding-left: 1.5rem;
+}
+.steps li {
+  padding-left: 0.25rem;
+}
+.steps li + li {
+  margin-top: 0.6rem;
+}
+.steps li::marker {
+  font-family: var(--mono);
+  font-weight: 800;
+  color: var(--l5);
+}
+
+/* ─── Legal / text pages ──────────────────────────────────────── */
+
+.doc {
+  max-width: var(--measure);
+  padding-top: clamp(2rem, 5vw, 3.5rem);
+  padding-bottom: clamp(3rem, 7vw, 5rem);
+}
+.doc h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.doc .updated {
+  margin: 0.5rem 0 2rem;
+  color: var(--muted);
+}
+.doc h2 {
+  margin: 2.5rem 0 0.5rem;
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+.doc h3 {
+  margin: 1.5rem 0 0.25rem;
+  font-size: 1.05rem;
+}
+.doc p,
+.doc li {
+  color: #c9d0db;
+}
+.doc ul {
+  padding-left: 1.2rem;
+}
+.doc li + li {
+  margin-top: 0.35rem;
+}
+.doc strong {
+  color: var(--text);
+}
+.summary {
+  margin: 0 0 2rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--panel);
+  border-left: 4px solid var(--l1);
+  border-radius: 0 10px 10px 0;
+}
+.summary p {
+  margin: 0;
+}
+.doc table {
+  width: 100%;
+  margin: 1rem 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.doc th,
+.doc td {
+  padding: 0.6rem 0.75rem 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.doc th {
+  color: var(--text);
+}
+.table-scroll {
+  overflow-x: auto;
+}
+
+/* ─── Footer ──────────────────────────────────────────────────── */
+
+.colophon {
+  border-top: 1px solid var(--line);
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+.colophon nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1rem;
+}
+.colophon nav a {
+  color: var(--text);
+}
+.colophon p {
+  margin: 0.35rem 0 0;
+  max-width: var(--measure);
+}
+
+@media (max-width: 30rem) {
+  .masthead nav {
+    gap: 0.9rem;
+    font-size: 0.9rem;
+  }
+  .ladder li {
+    grid-template-columns: 1fr;
+  }
+  .ladder .range {
+    grid-row: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

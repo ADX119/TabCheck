@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tab Brainrot Meter: a Chrome extension that roasts your tab count</title>
+    <meta
+      name="description"
+      content="Tab Brainrot Meter counts your open Chrome tabs, rates your brainrot from Sigma Mode to Tung Tung Tung Sahur, then helps you close the extras. Free, with a $4.99 one-time Pro upgrade."
+    />
+    <link rel="canonical" href="https://tab-brainrot-meter.vercel.app/" />
+    <meta name="theme-color" content="#0f1218" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon32.png" />
+    <link rel="apple-touch-icon" href="/icon128.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tab Brainrot Meter" />
+    <meta property="og:title" content="Tab Brainrot Meter" />
+    <meta property="og:description" content="Counts your tabs. Roasts you for them. Then helps you close them." />
+    <meta property="og:url" content="https://tab-brainrot-meter.vercel.app/" />
+    <meta property="og:image" content="https://tab-brainrot-meter.vercel.app/icon128.png" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Tab Brainrot Meter",
+        "applicationCategory": "BrowserApplication",
+        "operatingSystem": "Chrome",
+        "description": "Counts your open Chrome tabs, rates your brainrot level and helps you close the extras.",
+        "url": "https://tab-brainrot-meter.vercel.app/",
+        "offers": [
+          { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD" },
+          { "@type": "Offer", "name": "Pro", "price": "4.99", "priceCurrency": "USD" }
+        ]
+      }
+    </script>
+    <script src="/site.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <div class="strip" aria-hidden="true">
+      <div class="tabs" id="tabs"></div>
+      <span class="newtab">+</span>
+    </div>
+
+    <header class="masthead wrap">
+      <a class="brand" href="/">
+        <img src="/icon32.png" width="28" height="28" alt="" />
+        Tab Brainrot Meter
+      </a>
+      <nav aria-label="Main">
+        <a href="#pricing">Pricing</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="readout" aria-hidden="true">
+          <p class="count"><span id="count">101</span> <small>tabs</small></p>
+          <p class="level" id="level">Tung Tung Tung Sahur 🪵</p>
+        </div>
+        <div class="meter" id="meter" aria-hidden="true"><span></span></div>
+        <p class="roast" id="roast" aria-hidden="true">“Even the brainrot has brainrot.”</p>
+
+        <h1 id="hero-title">Counts your tabs. Roasts you for them. Then helps you close them.</h1>
+        <p class="lede">
+          Tab Brainrot Meter is a Chrome extension. Open it to see how many tabs you have, how cooked
+          your brain is, and a button that closes the ones you'll never read.
+        </p>
+        <div class="actions">
+          <span class="button is-pending">Chrome Web Store listing coming soon</span>
+          <a href="https://github.com/ADX119/TabCheck">See the source code on GitHub</a>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="levels-title">
+        <div class="wrap">
+          <h2 id="levels-title">Five levels of cooked</h2>
+          <p>Your level updates live as you open and close tabs. Every tab past ten costs you 100 aura.</p>
+          <ol class="ladder">
+            <li class="r1">
+              <span class="range">0–10</span>
+              <span class="name">Sigma Mode 🗿</span>
+              <span class="quote">“Sigma grindset. Your RAM is mewing.”</span>
+            </li>
+            <li class="r2">
+              <span class="range">11–25</span>
+              <span class="name">Mid Behavior 😐</span>
+              <span class="quote">“It's giving ‘I'll read it later’. You won't.”</span>
+            </li>
+            <li class="r3">
+              <span class="range">26–50</span>
+              <span class="name">Lowkey Cooked 🍳</span>
+              <span class="quote">“Bro thinks the tab bar is a bookmark manager.”</span>
+            </li>
+            <li class="r4">
+              <span class="range">51–100</span>
+              <span class="name">Skibidi Brainrot 🚽</span>
+              <span class="quote">“Your tabs need their own zip code.”</span>
+            </li>
+            <li class="r5">
+              <span class="range">101+</span>
+              <span class="name">Tung Tung Tung Sahur 🪵</span>
+              <span class="quote">“You don't have tabs. You have a lore.”</span>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section" id="pricing" aria-labelledby="pricing-title">
+        <div class="wrap">
+          <h2 id="pricing-title">Pricing</h2>
+          <p>The meter and the basic cleanup are free forever. Pro is one payment, not a subscription.</p>
+
+          <div class="plans">
+            <div class="plan">
+              <h3>Free</h3>
+              <p class="price">$0</p>
+              <ul>
+                <li>Live tab count, brainrot level and roasts</li>
+                <li>A notification when you cross 10, 15, 20, 25, 35, 50, 67, 75 and 100 tabs</li>
+                <li>Touch grass: close everything except your 10 most recently used tabs, with undo</li>
+                <li>Restore the tabs from your latest cleanup</li>
+              </ul>
+            </div>
+            <div class="plan is-pro">
+              <h3>Pro</h3>
+              <p class="price">$4.99 <small>once</small></p>
+              <ul>
+                <li>Everything in Free</li>
+                <li>Close duplicate tabs in one click</li>
+                <li>Close tabs you haven't looked at in 24 hours</li>
+                <li>Tab graveyard: bring back any of your last 200 closed tabs</li>
+                <li>One license key works on up to 3 browsers</li>
+              </ul>
+              <span class="button is-pending">Checkout opens at launch</span>
+            </div>
+          </div>
+
+          <p class="fine">
+            Pinned tabs, tabs playing audio and the tab you're on are never closed. Prices are in US dollars.
+            Sales tax, VAT or GST may be added at checkout depending on where you live. By buying Pro you agree
+            to the <a href="/terms">Terms of Service</a> and the <a href="/refund">Refund Policy</a>, which gives
+            you 14 days to get your money back.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="how-title">
+        <div class="wrap">
+          <h2 id="how-title">How to get Pro</h2>
+          <ol class="steps">
+            <li>Click <strong>Go Pro</strong> in the extension and pay on the secure Dodo Payments checkout page.</li>
+            <li>Dodo emails you a license key a moment later.</li>
+            <li>Click <strong>Enter your license key</strong> in the extension and paste it. Pro unlocks right away.</li>
+          </ol>
+          <p class="fine">
+            Dodo Payments is our merchant of record: it handles the payment, your receipt and any taxes.
+            Your card details never reach us or the extension.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="privacy-title">
+        <div class="wrap">
+          <h2 id="privacy-title">Your tabs stay in your browser</h2>
+          <p>
+            The extension doesn't track you, doesn't show ads and doesn't send your tabs anywhere. The only
+            thing it ever sends is your Pro license key, to Dodo Payments, to check that it's valid. This website
+            has no cookies, analytics or trackers either. Read the full <a href="/privacy">Privacy Policy</a>.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="colophon wrap">
+      <nav aria-label="Legal">
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/refund">Refund Policy</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <p>Payments are processed by Dodo Payments, our merchant of record.</p>
+      <p>
+        Tab Brainrot Meter is made by Aditya Andurkar. It is not affiliated with or endorsed by Google.
+        Chrome is a trademark of Google LLC.
+      </p>
+      <p>© 2026 Aditya Andurkar</p>
+    </footer>
+  </body>
+</html>

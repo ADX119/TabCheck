@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Crown, Heart, KeyRound, Wallet } from "lucide-react";
 import { toast } from "sonner";
-import { DONATION_URL, PRO_PRICE_LABEL, SOLANA_TIP_ADDRESS } from "@/config";
+import { DONATION_URL, PRO_PRICE_LABEL, SOLANA_TIP_ADDRESS, WEBSITE_URL } from "@/config";
 import { activateLicense, canUpgrade, openUpgradePage, removeLicense } from "@/lib/pro";
 import { Button } from "./ui/button";
 
@@ -54,6 +54,17 @@ export function SupportFooter({ isPro }: SupportFooterProps) {
               <Crown size={14} />
               Go Pro: {PRO_PRICE_LABEL}
             </Button>
+            <p className="text-center text-[10px] text-muted-foreground">
+              By buying you agree to the{" "}
+              <a href={`${WEBSITE_URL}/terms`} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+                Terms
+              </a>{" "}
+              and{" "}
+              <a href={`${WEBSITE_URL}/refund`} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+                14-day Refund Policy
+              </a>
+              .
+            </p>
 
             {showKeyInput ? (
               <div className="flex gap-1.5">
