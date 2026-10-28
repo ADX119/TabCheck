@@ -15,7 +15,7 @@ export const PRO_PRICE_LABEL = "$4.99 once";
 
 // The website in site/, deployed on Vercel. Buyers agree to its terms and
 // refund policy, linked under the Go Pro button.
-export const WEBSITE_URL = "https://tab-brainrot-meter.vercel.app";
+export const WEBSITE_URL = "https://tab-brainrot.vercel.app";
 
 // Where the "Donate" link sends people (Ko-fi, Buy Me a Coffee, Razorpay
 // payment page, UPI link...). Leave it empty to hide the link.

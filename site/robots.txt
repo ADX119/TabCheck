@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tab-brainrot-meter.vercel.app/sitemap.xml
+Sitemap: https://tab-brainrot.vercel.app/sitemap.xml

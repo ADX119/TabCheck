@@ -6,7 +6,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 const SITE = "site";
-const ORIGIN = "https://tab-brainrot-meter.vercel.app";
+const ORIGIN = "https://tab-brainrot.vercel.app";
 const LEGAL_PAGES = ["terms", "privacy", "refund", "contact"];
 const REQUIRED_HEADERS = [
   "Content-Security-Policy",
@@ -55,7 +55,7 @@ for (const file of pages) {
   if (/<style[\s>]/.test(html)) fail(`${file}: inline <style> is blocked by the CSP`);
   if (/\sstyle="/.test(html)) fail(`${file}: style="" attributes are blocked by the CSP`);
   if (/\son[a-z]+="/.test(html)) fail(`${file}: inline event handlers are blocked by the CSP`);
-  for (const m of html.matchAll(/<(script|link|img|source|iframe)\b[^>]*\b(src|href)="(https?:)?\/\/(?!tab-brainrot-meter\.vercel\.app)/g)) {
+  for (const m of html.matchAll(/<(script|link|img|source|iframe)\b[^>]*\b(src|href)="(https?:)?\/\/(?!tab-brainrot\.vercel\.app\/)/g)) {
     fail(`${file}: loads a <${m[1]}> from another origin`);
   }
 
