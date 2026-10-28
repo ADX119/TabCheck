@@ -13,14 +13,14 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
   build: {
     rollupOptions: {
       input: {
-        popup: path.resolve(__dirname, "index.html"),
-        background: path.resolve(__dirname, "src/background.ts"),
+        popup: path.resolve(import.meta.dirname, "index.html"),
+        background: path.resolve(import.meta.dirname, "src/background.ts"),
       },
       output: {
         // manifest.json points at a fixed background.js

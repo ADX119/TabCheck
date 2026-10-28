@@ -1,3 +1,5 @@
+# Dependabot only proposes updates as pull requests. Nothing reaches main until
+# the owner approves and merges it (enforced by the ruleset on main).
 version: 2
 updates:
   - package-ecosystem: npm
@@ -5,7 +7,15 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # Wait a week after a release before proposing it, so a hijacked or broken
+    # release is usually pulled before it reaches us. Security updates skip this.
+    cooldown:
+      default-days: 7
     groups:
+      # react-dom requires the exact same react version, so these must move together.
+      # Listed first so it wins over minor-and-patch.
+      react:
+        patterns: [react, react-dom, "@types/react", "@types/react-dom"]
       # One PR for routine minor/patch bumps; security fixes still come separately.
       minor-and-patch:
         update-types: [minor, patch]
@@ -14,3 +24,5 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
