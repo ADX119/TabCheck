@@ -47,6 +47,9 @@ for (const file of pages) {
 
   if (!/<html lang="en">/.test(html)) fail(`${file}: missing <html lang>`);
   if (!/<title>[^<]+<\/title>/.test(html)) fail(`${file}: missing <title>`);
+  if (!html.includes('<script src="/_vercel/insights/script.js" defer></script>')) {
+    fail(`${file}: missing the Vercel Web Analytics script`);
+  }
 
   // CSP is script-src 'self'; style-src 'self': no inline code or remote assets.
   for (const m of html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>/g)) {
